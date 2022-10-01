@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Button Click App</string>
+    <string name="textview">""</string>
+    <string name="button">Button</string>
+    <string name="editText">Name</string>
+    <string name="String_value">plain_edit_text</string>
 </resources>
