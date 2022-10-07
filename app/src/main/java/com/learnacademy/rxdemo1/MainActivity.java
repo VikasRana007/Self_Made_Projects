@@ -33,9 +33,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         textView=findViewById(R.id.tvGreeting);
-        myObservable=Observable.just(greeting);       // To initialise the observer , this is one way to initialization
+        myObservable=Observable.just(greeting);
+
+                                                            // To initialise the observer , this is one way to initialization
         myObservable.subscribeOn(Schedulers.io());         // Rx java make a new thread to do this task on IO thread .
         myObservable.observeOn(AndroidSchedulers.mainThread());  // observable data stream will observe on main thread With the help of AndroidSchedulers
+
+
 
         myObserver = new DisposableObserver<String>() {
             @Override
@@ -53,8 +57,15 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG," onComplete invoked");
             }
         };
-        compositeDisposable.add(myObserver);
-        myObservable.subscribe(myObserver);
+
+        compositeDisposable.add(
+        myObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(myObserver));
+
+//        compositeDisposable.add(myObserver);       // These two lines(67,68) can also be written as above one line code using composite disposable
+//        myObservable.subscribe(myObserver);
 
 
     myObserver2 = new DisposableObserver<String>() {
@@ -76,8 +87,12 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG," onComplete invoked");
         }
     };
-        compositeDisposable.add(myObserver2);
-        myObservable.subscribe(myObserver2);
+
+        compositeDisposable.add(
+                myObservable.subscribeWith(myObserver2));
+
+       // compositeDisposable.add(myObserver2);
+      // myObservable.subscribe(myObserver2);
 
 }
 
