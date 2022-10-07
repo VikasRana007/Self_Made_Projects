@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private String greeting= "Hello From RxJava";
     private Observable<String> myObservable;
     private Observer<String> myObserver;
+    private Disposable disposable;
 
 
     private TextView textView;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         myObserver=new Observer<String>() {
             @Override
             public void onSubscribe(Disposable d) {
-
+                      disposable = d;
                 Log.i(TAG," onSubscribe invoked");
 
             }
@@ -60,5 +61,11 @@ public class MainActivity extends AppCompatActivity {
 
         myObservable.subscribe(myObserver);
 
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        disposable.dispose();
     }
 }
