@@ -1,18 +1,17 @@
 package com.learnacademy.rxdemo1;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
+import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.observers.DisposableObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,9 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         myObservable=Observable.create(new ObservableOnSubscribe<Student>() {
             @Override
-            public void subscribe(ObservableEmitter<Student> emitter) throws Exception {
-
-
+            public void subscribe(@NonNull ObservableEmitter<Student> emitter) throws Throwable {
                 ArrayList<Student> studentArrayList=getStudents();
 
                 for(Student student:studentArrayList){
@@ -43,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 emitter.onComplete();
-
-
-
             }
         });
 
@@ -60,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private DisposableObserver getObserver() {
+    private DisposableObserver<Student> getObserver() {
 
         myObserver = new DisposableObserver<Student>() {
             @Override
